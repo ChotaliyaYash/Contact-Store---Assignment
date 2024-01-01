@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "../components/Alert";
-import { loginUser, loginAsyncThunk } from "../features/user/userSlice";
+import {
+	addContactAsyncThunk,
+	addContactSlice,
+} from "../features/contact/contactSlice";
 import Loader from "../components/Loader";
 
-export default function LoginPage() {
+const AddContact = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { loading, error } = useSelector((state) => state.user);
+	const { loading, error } = useSelector((state) => state.contact);
 
 	const [showAlertData, setShowAlertData] = useState({
 		show: false,
@@ -18,16 +21,16 @@ export default function LoginPage() {
 		message: "",
 	});
 
-	const handleLogin = async (e) => {
+	const handleAdd = async (e) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData);
 
-		if (data.password.length < 6) {
+		if (data.phone.length !== 10) {
 			setShowAlertData({
 				show: true,
 				title: "Error",
-				message: "Password must be at least 6 characters long.",
+				message: "Contact number must be 10 digits long.",
 			});
 			setTimeout(() => {
 				setShowAlertData({
@@ -39,9 +42,9 @@ export default function LoginPage() {
 			return;
 		}
 
-		dispatch(loginUser({ user: data }));
+		dispatch(addContactSlice({ _id: Math.random(), ...data }));
 
-		// const res = await dispatch(loginAsyncThunk(data));
+		// const res = await dispatch(addContactAsyncThunk(data));
 
 		// if (res.meta.requestStatus === "fulfilled") {
 		// 	navigate("/");
@@ -61,7 +64,6 @@ export default function LoginPage() {
 				message: "",
 			});
 		}, 10000);
-		return;
 	}
 
 	return (
@@ -71,15 +73,32 @@ export default function LoginPage() {
 				showAlert={showAlertData.show}
 				title={showAlertData.title}
 			/>
-			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-						Sign in to your account
-					</h2>
-				</div>
 
-				<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-					<form className="space-y-6" onSubmit={handleLogin}>
+			<div className="bg-gray-100 min-h-screen p-4">
+				<div className=" sm:max-w-lg sm:w-full bg-white mx-auto rounded-lg">
+					<h2 className="text-center pt-10 p-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+						Add new contact
+					</h2>
+
+					<form onSubmit={handleAdd} className="p-4 space-y-6">
+						<div>
+							<label
+								htmlFor="name"
+								className="block text-sm font-medium leading-6 text-gray-900"
+							>
+								Name
+							</label>
+							<div className="mt-2">
+								<input
+									id="name"
+									name="name"
+									type="text"
+									required
+									className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								/>
+							</div>
+						</div>
+
 						<div>
 							<label
 								htmlFor="email"
@@ -92,7 +111,6 @@ export default function LoginPage() {
 									id="email"
 									name="email"
 									type="email"
-									autoComplete="email"
 									required
 									className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								/>
@@ -100,28 +118,17 @@ export default function LoginPage() {
 						</div>
 
 						<div>
-							<div className="flex items-center justify-between">
-								<label
-									htmlFor="password"
-									className="block text-sm font-medium leading-6 text-gray-900"
-								>
-									Password
-								</label>
-								<div className="text-sm">
-									<Link
-										to="/forgot-password"
-										className="font-semibold text-indigo-600 hover:text-indigo-500"
-									>
-										Forgot password?
-									</Link>
-								</div>
-							</div>
+							<label
+								htmlFor="phone"
+								className="block text-sm font-medium leading-6 text-gray-900"
+							>
+								Contact Number
+							</label>
 							<div className="mt-2">
 								<input
-									id="password"
-									name="password"
-									type="password"
-									autoComplete="current-password"
+									id="phone"
+									name="phone"
+									type="number"
 									required
 									className="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								/>
@@ -133,22 +140,14 @@ export default function LoginPage() {
 								type="submit"
 								className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 							>
-								{loading ? <Loader /> : "Log in"}
+								{loading ? <Loader /> : "Add"}
 							</button>
 						</div>
 					</form>
-
-					<p className="mt-10 text-center text-sm text-gray-500">
-						Not a member?{" "}
-						<Link
-							to="/signup"
-							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-						>
-							Signup
-						</Link>
-					</p>
 				</div>
 			</div>
 		</>
 	);
-}
+};
+
+export default AddContact;

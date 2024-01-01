@@ -3,11 +3,29 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser, logOutUserAsyncThunk } from "../features/user/userSlice";
+
 export default function Header() {
+	const dispatch = useDispatch();
+
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+	const { currentUser } = useSelector((state) => state.user);
+
+	const handleLogout = async (e) => {
+		e.preventDefault();
+		dispatch(logoutUser());
+
+		// const res = await dispatch(logOutUserAsyncThunk());
+		// if (res.meta.requestStatus === "fulfilled") {
+		// 	navigate("/login");
+		// }
+	};
 
 	return (
 		<header className="bg-white shadow-sm">
+			{/* large screen */}
 			<nav
 				className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
 				aria-label="Global"
@@ -27,25 +45,39 @@ export default function Header() {
 						<Bars3Icon className="h-6 w-6" aria-hidden="true" />
 					</button>
 				</div>
-				<div className="hidden lg:flex lg:flex-1 items-center lg:justify-end gap-5">
-					<Link
-						to="/login"
-						className="text-sm font-semibold leading-6 text-gray-900 text-center"
-					>
-						Log in{" "}
-						<span aria-hidden="true" className="">
-							&rarr;
-						</span>
-					</Link>
+				{!currentUser ? (
+					<div className="hidden lg:flex lg:flex-1 items-center lg:justify-end gap-5">
+						<Link
+							to="/login"
+							className="text-sm font-semibold leading-6 text-gray-900 text-center"
+						>
+							Log in{" "}
+							<span aria-hidden="true" className="">
+								&rarr;
+							</span>
+						</Link>
 
-					<Link
-						to="/signup"
-						className="text-sm font-semibold leading-6 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-					>
-						Sign up <span aria-hidden="true">&rarr;</span>
-					</Link>
-				</div>
+						<Link
+							to="/signup"
+							className="text-sm font-semibold leading-6 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+						>
+							Sign up <span aria-hidden="true">&rarr;</span>
+						</Link>
+					</div>
+				) : (
+					<div className="hidden lg:flex lg:flex-1 items-center lg:justify-end gap-5">
+						<button
+							type="button"
+							className="text-sm font-semibold leading-6 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+							onClick={handleLogout}
+						>
+							Logout
+						</button>
+					</div>
+				)}
 			</nav>
+
+			{/* mobile */}
 			<Dialog
 				as="div"
 				className="lg:hidden"
