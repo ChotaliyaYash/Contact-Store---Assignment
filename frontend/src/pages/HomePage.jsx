@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import {
 	deleteContactAsyncThunk,
 	deleteContactSlice,
+	getContactsAsyncThunk,
 } from "../features/contact/contactSlice";
 
 const HomePage = () => {
@@ -13,12 +14,18 @@ const HomePage = () => {
 
 	const { loading, contacts, error } = useSelector((state) => state.contact);
 
-	const handleDelete = async (id) => {
-		// dispatch(deleteContactSlice(id));
+	useEffect(() => {
+		if (contacts.length === 0 || !contacts) {
+			dispatch(getContactsAsyncThunk());
+		}
+	}, []);
 
+	const handleDelete = async (id) => {
 		const res = await dispatch(deleteContactAsyncThunk(id));
 
 		if (res.meta.requestStatus === "fulfilled") {
+			dispatch(deleteContactSlice(id));
+			alert("Contact Deleted Successfully");
 			navigate("/");
 		}
 	};

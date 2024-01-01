@@ -5,6 +5,7 @@ const cors = require('cors');
 // custom imports
 const { connect } = require('./utils/database');
 const userRouter = require('./router/userRouter');
+const contactRouter = require('./router/contactRouter');
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(cors());
 // all custom middlewares
 // user routes
 app.use("/api/auth", userRouter);
+
+// contact routes
+app.use("/api/contact", contactRouter);
 
 // error final route
 app.use((err, req, res, next) => {

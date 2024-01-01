@@ -12,7 +12,7 @@ export const updateContact = (data) => {
     return axios.patch(`/api/contact/update/${data._id}`, data);
 }
 
-export const getContacts = (data) => {
+export const getContacts = () => {
     return axios.get('/api/contact/get');
 }
 

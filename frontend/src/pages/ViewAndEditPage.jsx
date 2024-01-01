@@ -3,7 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Loader from "../components/Loader";
-import { updateContactAsyncThunk } from "../features/contact/contactSlice";
+import {
+	updateContactAsyncThunk,
+	updateContactSlice,
+} from "../features/contact/contactSlice";
 
 const ViewAndEditPage = () => {
 	const { id, type } = useParams();
@@ -53,6 +56,8 @@ const ViewAndEditPage = () => {
 		const res = await dispatch(updateContactAsyncThunk(data));
 
 		if (res.meta.requestStatus === "fulfilled") {
+			dispatch(updateContactSlice(data));
+			alert("Contact Updated Successfully");
 			navigate("/");
 		}
 	};
