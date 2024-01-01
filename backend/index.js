@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const path = require('path');
 
 // custom imports
 const { connect } = require('./utils/database');
@@ -24,6 +25,13 @@ app.use("/api/auth", userRouter);
 
 // contact routes
 app.use("/api/contact", contactRouter);
+
+// render
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../', 'frontend', 'dist', 'index.html'));
+})
 
 // error final route
 app.use((err, req, res, next) => {
