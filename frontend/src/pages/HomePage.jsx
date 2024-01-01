@@ -51,6 +51,13 @@ const HomePage = () => {
 						No Contacts Found
 					</div>
 				</div>
+				{/* flotting button */}
+				<Link
+					to="/contact/add"
+					className="fixed bottom-10 right-10 px-4 py-3 rounded-full bg-indigo-600 text-white font-bold text-sm"
+				>
+					+ Add Contact
+				</Link>
 			</main>
 		);
 	}

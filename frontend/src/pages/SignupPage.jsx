@@ -28,7 +28,7 @@ export default function SignupPage() {
 
 		// Validation
 
-		if (data.contact.length !== 10) {
+		if (`${data.phone}`.length !== 10) {
 			setShowAlertData({
 				show: true,
 				title: "Error",
@@ -76,7 +76,9 @@ export default function SignupPage() {
 			return;
 		}
 
-		dispatch(signupUser({ user: { ...data, state, city } }));
+		dispatch(
+			signupUser({ user: { ...data, state, city, phone: +data.phone } })
+		);
 
 		// const res = await dispatch(signupAsyncThunk({ ...data, state, city }));
 
@@ -155,15 +157,15 @@ export default function SignupPage() {
 
 						<div>
 							<label
-								htmlFor="contact"
+								htmlFor="phone"
 								className="block text-sm font-medium leading-6 text-gray-900"
 							>
 								Contact Number
 							</label>
 							<div className="mt-2">
 								<input
-									id="contact"
-									name="contact"
+									id="phone"
+									name="phone"
 									type="number"
 									autoComplete="email"
 									required

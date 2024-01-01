@@ -42,7 +42,9 @@ const AddContact = () => {
 			return;
 		}
 
-		dispatch(addContactSlice({ _id: Math.random(), ...data }));
+		dispatch(
+			addContactSlice({ _id: Math.random(), ...data, phone: +data.phone })
+		);
 
 		// const res = await dispatch(addContactAsyncThunk(data));
 

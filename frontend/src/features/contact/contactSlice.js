@@ -77,30 +77,30 @@ const initialState = {
     error: null,
     loading: false,
     contacts: [
-        {
-            name: "Yash Chotaliya",
-            email: "yash@gmail.com",
-            phone: "+91-9723357085",
-            _id: 1,
-        },
-        {
-            name: "Yash Chotaliya",
-            email: "yash@gmail.com",
-            phone: "+91-9723357085",
-            _id: 2,
-        },
-        {
-            name: "Yash Chotaliya",
-            email: "yash@gmail.com",
-            phone: "+91-9723357085",
-            _id: 3,
-        },
-        {
-            name: "Yash Chotaliya",
-            email: "yash@gmail.com",
-            phone: "+91-9723357085",
-            _id: 4,
-        },
+        // {
+        //     name: "Yash Chotaliya",
+        //     email: "yash@gmail.com",
+        //     phone: 9723357085,
+        //     _id: 1,
+        // },
+        // {
+        //     name: "Yash Chotaliya",
+        //     email: "yash@gmail.com",
+        //     phone: 9723357085,
+        //     _id: 2,
+        // },
+        // {
+        //     name: "Yash Chotaliya",
+        //     email: "yash@gmail.com",
+        //     phone: 9723357085,
+        //     _id: 3,
+        // },
+        // {
+        //     name: "Yash Chotaliya",
+        //     email: "yash@gmail.com",
+        //     phone: 9723357085,
+        //     _id: 4,
+        // },
     ],
     singleContact: null,
 }
