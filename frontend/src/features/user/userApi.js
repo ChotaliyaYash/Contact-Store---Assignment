@@ -5,7 +5,7 @@ export const loginCall = (data) => {
 }
 
 export const signupcall = (data) => {
-    return axios.post('/api/auth/register', data)
+    return axios.post('/api/auth/signup', data)
 }
 
 export const logoutcall = () => {
