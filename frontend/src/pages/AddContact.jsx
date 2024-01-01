@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Alert from "../components/Alert";
-import {
-	addContactAsyncThunk,
-	addContactSlice,
-} from "../features/contact/contactSlice";
+import { addContactAsyncThunk } from "../features/contact/contactSlice";
 import Loader from "../components/Loader";
 
 const AddContact = () => {
@@ -15,67 +11,33 @@ const AddContact = () => {
 
 	const { loading, error } = useSelector((state) => state.contact);
 
-	const [showAlertData, setShowAlertData] = useState({
-		show: false,
-		title: "",
-		message: "",
-	});
-
 	const handleAdd = async (e) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
 		const data = Object.fromEntries(formData);
 
 		if (data.phone.length !== 10) {
-			setShowAlertData({
-				show: true,
-				title: "Error",
-				message: "Contact number must be 10 digits long.",
-			});
-			setTimeout(() => {
-				setShowAlertData({
-					show: false,
-					title: "",
-					message: "",
-				});
-			}, 3000);
+			alert("Contact number must be 10 digits long.");
 			return;
 		}
 
-		dispatch(
-			addContactSlice({ _id: Math.random(), ...data, phone: +data.phone })
+		const res = await dispatch(
+			addContactAsyncThunk({ ...data, phone: +data.phone })
 		);
 
-		// const res = await dispatch(addContactAsyncThunk(data));
-
-		// if (res.meta.requestStatus === "fulfilled") {
-		// 	navigate("/");
-		// }
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/");
+		}
 	};
 
-	if (error) {
-		setShowAlertData({
-			show: true,
-			title: "Error",
-			message: error,
-		});
-		setTimeout(() => {
-			setShowAlertData({
-				show: false,
-				title: "",
-				message: "",
-			});
-		}, 10000);
-	}
+	useEffect(() => {
+		if (error) {
+			alert(error);
+		}
+	}, [error]);
 
 	return (
 		<>
-			<Alert
-				message={showAlertData.message}
-				showAlert={showAlertData.show}
-				title={showAlertData.title}
-			/>
-
 			<div className="bg-gray-100 min-h-screen p-4">
 				<div className=" sm:max-w-lg sm:w-full bg-white mx-auto rounded-lg">
 					<h2 className="text-center pt-10 p-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">

@@ -14,13 +14,13 @@ const HomePage = () => {
 	const { loading, contacts, error } = useSelector((state) => state.contact);
 
 	const handleDelete = async (id) => {
-		dispatch(deleteContactSlice(id));
+		// dispatch(deleteContactSlice(id));
 
-		// const res = await dispatch(deleteContactAsyncThunk(id));
+		const res = await dispatch(deleteContactAsyncThunk(id));
 
-		// if (res.meta.requestStatus === "fulfilled") {
-		// 	navigate("/");
-		// }
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/");
+		}
 	};
 
 	if (loading) {

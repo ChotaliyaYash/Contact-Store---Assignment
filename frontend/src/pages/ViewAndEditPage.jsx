@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Loader from "../components/Loader";
-import {
-	updateContactAsyncThunk,
-	updateContactSlice,
-} from "../features/contact/contactSlice";
-import Alert from "../components/Alert";
+import { updateContactAsyncThunk } from "../features/contact/contactSlice";
 
 const ViewAndEditPage = () => {
 	const { id, type } = useParams();
 	const [data, setData] = useState();
 	const [edit, setEdit] = useState(false);
 
-	const [showAlertData, setShowAlertData] = useState({
-		show: false,
-		title: "",
-		message: "",
-	});
-
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const { contacts, loading, error } = useSelector((state) => state.contact);
 
@@ -55,39 +46,19 @@ const ViewAndEditPage = () => {
 		console.log(data);
 
 		if (`${data.phone}`.length !== 10) {
-			setShowAlertData({
-				show: true,
-				title: "Error",
-				message: "Contact number must be 10 digits long.",
-			});
-			setTimeout(() => {
-				setShowAlertData({
-					show: false,
-					title: "",
-					message: "",
-				});
-			}, 3000);
+			alert("Contact number must be 10 digits long.");
 			return;
 		}
 
-		console.log(data);
+		const res = await dispatch(updateContactAsyncThunk(data));
 
-		dispatch(updateContactSlice(data));
-
-		// const res = await dispatch(updateContactAsyncThunk(data));
-
-		// if (res.meta.requestStatus === "fulfilled") {
-		setEdit(false);
-		// }
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/");
+		}
 	};
 
 	return (
 		<>
-			<Alert
-				message={showAlertData.message}
-				showAlert={showAlertData.show}
-				title={showAlertData.title}
-			/>
 			<div className="bg-gray-100 min-h-screen p-4">
 				<div className="sm:max-w-lg sm:w-full bg-white mx-auto rounded-lg">
 					<form className="p-4 space-y-6">

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import Alert from "../components/Alert";
 import { signupAsyncThunk } from "../features/user/userSlice";
 import Loader from "../components/Loader";
 
@@ -15,12 +14,6 @@ export default function SignupPage() {
 
 	const { loading, error } = useSelector((state) => state.user);
 
-	const [showAlertData, setShowAlertData] = useState({
-		show: false,
-		title: "",
-		message: "",
-	});
-
 	const handleSignUp = async (e) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
@@ -29,56 +22,19 @@ export default function SignupPage() {
 		// Validation
 
 		if (`${data.phone}`.length !== 10) {
-			setShowAlertData({
-				show: true,
-				title: "Error",
-				message: "Contact number must be 10 digits long.",
-			});
-			setTimeout(() => {
-				setShowAlertData({
-					show: false,
-					title: "",
-					message: "",
-				});
-			}, 3000);
+			alert("Contact number must be 10 digits long.");
 			return;
 		}
 
 		if (data.password.length < 6) {
-			setShowAlertData({
-				show: true,
-				title: "Error",
-				message: "Password must be at least 6 characters long.",
-			});
-			setTimeout(() => {
-				setShowAlertData({
-					show: false,
-					title: "",
-					message: "",
-				});
-			}, 3000);
+			alert("Password must be at least 6 characters long.");
 			return;
 		}
 
 		if (!city || !state) {
-			setShowAlertData({
-				show: true,
-				title: "Error",
-				message: "Please select your city and state.",
-			});
-			setTimeout(() => {
-				setShowAlertData({
-					show: false,
-					title: "",
-					message: "",
-				});
-			}, 3000);
+			alert("Please select your city and state.");
 			return;
 		}
-
-		// dispatch(
-		// 	signupUser({ user: { ...data, state, city, phone: +data.phone } })
-		// );
 
 		const res = await dispatch(
 			signupAsyncThunk({ ...data, state, city, phone: +data.phone })
@@ -89,28 +45,14 @@ export default function SignupPage() {
 		}
 	};
 
-	if (error) {
-		setShowAlertData({
-			show: true,
-			title: "Error",
-			message: error,
-		});
-		setTimeout(() => {
-			setShowAlertData({
-				show: false,
-				title: "",
-				message: "",
-			});
-		}, 10000);
-	}
+	useEffect(() => {
+		if (error) {
+			alert(error);
+		}
+	}, [error]);
 
 	return (
 		<>
-			<Alert
-				message={showAlertData.message}
-				showAlert={showAlertData.show}
-				title={showAlertData.title}
-			/>
 			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
 				<div className="sm:mx-auto sm:w-full sm:max-w-sm">
 					<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
