@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "../components/Alert";
-import { signupUser, signupAsyncThunk } from "../features/user/userSlice";
+import { signupAsyncThunk } from "../features/user/userSlice";
 import Loader from "../components/Loader";
 
 export default function SignupPage() {
@@ -76,15 +76,17 @@ export default function SignupPage() {
 			return;
 		}
 
-		dispatch(
-			signupUser({ user: { ...data, state, city, phone: +data.phone } })
+		// dispatch(
+		// 	signupUser({ user: { ...data, state, city, phone: +data.phone } })
+		// );
+
+		const res = await dispatch(
+			signupAsyncThunk({ ...data, state, city, phone: +data.phone })
 		);
 
-		// const res = await dispatch(signupAsyncThunk({ ...data, state, city }));
-
-		// if (res.meta.requestStatus === "fulfilled") {
-		// 	navigate("/");
-		// }
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/");
+		}
 	};
 
 	if (error) {

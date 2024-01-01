@@ -84,12 +84,12 @@ export const userSlice = createSlice({
                 localStorage.setItem('user', JSON.stringify(action.payload.user));
 
                 state.loading = false;
-                state.currentUser = action.payload;
+                state.currentUser = action.payload.user;
                 state.error = null;
             })
             .addCase(loginAsyncThunk.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload.response.data.message;
             })
 
             // signup
@@ -101,12 +101,12 @@ export const userSlice = createSlice({
                 localStorage.setItem('user', JSON.stringify(action.payload.user));
 
                 state.loading = false;
-                state.currentUser = action.payload;
+                state.currentUser = action.payload.user;
                 state.error = null;
             })
             .addCase(signupAsyncThunk.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload.response.data.message;
             })
 
             // sign out
@@ -123,7 +123,7 @@ export const userSlice = createSlice({
             })
             .addCase(logOutUserAsyncThunk.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload.response.data.message;
             })
     },
 })

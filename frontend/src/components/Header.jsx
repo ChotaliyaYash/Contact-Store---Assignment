@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser, logOutUserAsyncThunk } from "../features/user/userSlice";
+import { logOutUserAsyncThunk } from "../features/user/userSlice";
 
 export default function Header() {
 	const dispatch = useDispatch();
@@ -15,12 +15,11 @@ export default function Header() {
 
 	const handleLogout = async (e) => {
 		e.preventDefault();
-		dispatch(logoutUser());
 
-		// const res = await dispatch(logOutUserAsyncThunk());
-		// if (res.meta.requestStatus === "fulfilled") {
-		// 	navigate("/login");
-		// }
+		const res = await dispatch(logOutUserAsyncThunk());
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/login");
+		}
 	};
 
 	return (
@@ -99,25 +98,41 @@ export default function Header() {
 							<XMarkIcon className="h-6 w-6" aria-hidden="true" />
 						</button>
 					</div>
-					<div className="mt-6 flow-root">
-						<div className="-my-6 divide-y divide-gray-500/10">
-							<div className="py-6 flex flex-col gap-5">
-								<Link
-									to="/login"
-									className="-mx-3 block rounded-lg border border-gray-200 px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-								>
-									Log in <span aria-hidden="true">&rarr;</span>
-								</Link>
 
-								<Link
-									to="/signup"
-									className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 bg-indigo-600 text-white hover:bg-indigo-700"
-								>
-									Sign up <span aria-hidden="true">&rarr;</span>
-								</Link>
+					{!currentUser ? (
+						<div className="mt-6 flow-root">
+							<div className="-my-6 divide-y divide-gray-500/10">
+								<div className="py-6 flex flex-col gap-5">
+									<Link
+										to="/login"
+										className="-mx-3 block rounded-lg border border-gray-200 px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+									>
+										Log in <span aria-hidden="true">&rarr;</span>
+									</Link>
+
+									<Link
+										to="/signup"
+										className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 bg-indigo-600 text-white hover:bg-indigo-700"
+									>
+										Sign up <span aria-hidden="true">&rarr;</span>
+									</Link>
+								</div>
 							</div>
 						</div>
-					</div>
+					) : (
+						<div className="mt-6 flow-root">
+							<div className="-my-6 divide-y divide-gray-500/10">
+								<div className="py-6 flex flex-col gap-5">
+									<button
+										onClick={handleLogout}
+										className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 bg-indigo-600 text-white hover:bg-indigo-700"
+									>
+										Logout
+									</button>
+								</div>
+							</div>
+						</div>
+					)}
 				</Dialog.Panel>
 			</Dialog>
 		</header>

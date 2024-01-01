@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Alert from "../components/Alert";
-import { loginUser, loginAsyncThunk } from "../features/user/userSlice";
+import { loginAsyncThunk } from "../features/user/userSlice";
 import Loader from "../components/Loader";
 
 export default function LoginPage() {
@@ -39,29 +39,15 @@ export default function LoginPage() {
 			return;
 		}
 
-		dispatch(loginUser({ user: data }));
+		const res = await dispatch(loginAsyncThunk(data));
 
-		// const res = await dispatch(loginAsyncThunk(data));
-
-		// if (res.meta.requestStatus === "fulfilled") {
-		// 	navigate("/");
-		// }
+		if (res.meta.requestStatus === "fulfilled") {
+			navigate("/");
+		}
 	};
 
 	if (error) {
-		setShowAlertData({
-			show: true,
-			title: "Error",
-			message: error,
-		});
-		setTimeout(() => {
-			setShowAlertData({
-				show: false,
-				title: "",
-				message: "",
-			});
-		}, 10000);
-		return;
+		console.log(error);
 	}
 
 	return (
