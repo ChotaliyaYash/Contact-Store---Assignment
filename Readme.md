@@ -11,6 +11,25 @@ They should be able to see saved records in ListView at the dashboard screen. Th
 - Node.js
 - MongoDB (noSQL database)
 
+## Demo
+
+Check out the live demo of the application [here](https://contect-store.onrender.com).
+
+## Installation
+
+To run this application locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ChotaliyaYash/Contact-Store---Assignment.git
+   cd Contact-Store---Assignment
+   ```
+1. Install dependency and build the frontend:
+   ```bash
+   npm run buid,
+   npm run start
+   ```
+
 ## All screens and their description
 
 1. Signup Screen ; Ask user to fill all fields a mandatory to save in the API,
