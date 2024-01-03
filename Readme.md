@@ -29,6 +29,11 @@ To run this application locally, follow these steps:
    npm run buid,
    npm run start
    ```
+## dummy ID and Password
+   ```bash
+   Email: dummy@gmail.com,
+   Password: dummt@1234
+   ```
 
 ## All screens and their description
 
