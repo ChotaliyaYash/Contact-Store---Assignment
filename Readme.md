@@ -31,8 +31,8 @@ To run this application locally, follow these steps:
    ```
 ## dummy ID and Password
    ```bash
-   Email: dummy@gmail.com,
-   Password: dummt@1234
+   Email: test@gmail.com,
+   Password: test12
    ```
 
 ## All screens and their description
